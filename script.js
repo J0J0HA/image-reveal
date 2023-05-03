@@ -70,19 +70,21 @@ function stop() {
 }
 
 function start() {
-    data.shown = [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0].sort(() => Math.random() - 0.5);
-    for (let id of data.shown) {
-        show(id);
-    }
+    document.getElementById("img").className = "";
     faderem(document.getElementById("start"));
     faderem(document.getElementById("popup-won"));
     faderem(document.getElementById("popup-lost"));
-    document.getElementById("img").className = "";
     setTimeout(() => {
-        document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?__nocache__=" + Date.now())
-        fadeadd(document.getElementById("stop"));
-        document.getElementById("popup-won").className = "";
-        document.getElementById("popup-lost").className = "";
-        setTimeout(() => data.intervalID = setInterval(choose, 1000), 1000);
+        data.shown = [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0].sort(() => Math.random() - 0.5);
+        for (let id of data.shown) {
+            show(id);
+        }
+        setTimeout(() => {
+            document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?__nocache__=" + Date.now())
+            fadeadd(document.getElementById("stop"));
+            document.getElementById("popup-won").className = "";
+            document.getElementById("popup-lost").className = "";
+            setTimeout(() => data.intervalID = setInterval(choose, 1000), 1000);
+        }, 1000)
     }, 1000);
 }
