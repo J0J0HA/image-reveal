@@ -66,7 +66,7 @@ function stop() {
         }
         setTimeout(() => document.getElementById("img").className = "impo", 3000);
     }, 6000)
-    setTimeout(() => fadeadd(document.getElementById("start")), 3000);
+    setTimeout(() => fadeadd(document.getElementById("start")), 10000);
 }
 
 function start() {
@@ -81,10 +81,12 @@ function start() {
         }
         setTimeout(() => {
             document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?__nocache__=" + Date.now())
-            fadeadd(document.getElementById("stop"));
             document.getElementById("popup-won").className = "";
             document.getElementById("popup-lost").className = "";
-            setTimeout(() => data.intervalID = setInterval(choose, 1000), 1000);
+            setTimeout(() => {
+                data.intervalID = setInterval(choose, 1000);
+                fadeadd(document.getElementById("stop"));
+            }, 1000);
         }, 1000)
     }, 1000);
 }
