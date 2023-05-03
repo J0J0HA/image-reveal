@@ -79,7 +79,7 @@ function start() {
     faderem(document.getElementById("popup-lost"));
     document.getElementById("img").className = "";
     setTimeout(() => {
-        document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?greyscale&t=" + Date.now())
+        document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?__nocache__=" + Date.now())
         fadeadd(document.getElementById("stop"));
         document.getElementById("popup-won").className = "";
         document.getElementById("popup-lost").className = "";
