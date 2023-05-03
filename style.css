@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sigmar&display=swap');
 
-html, body {
+html,
+body {
     height: 100%;
     overflow: hidden;
     font-family: Sigmar;
@@ -39,18 +40,29 @@ img {
 
 .box {
     background-color: rgba(0, 0, 0, 1);
+    outline-offset: -2px;
     outline: 2px solid white;
     width: 100%;
     height: 100%;
     transition: background-color 1s ease-in, outline 2s ease-out 1.5s;
 }
 
+img {
+    transition: transform 1s ease-in-out;
+}
+
+img.impo {
+    transform: scale(1.2, 1.2);
+}
+
 .box.hidden {
     background-color: rgba(0, 0, 0, 0);
 }
+
 .box.hidden-outline {
-    outline: 1px solid rgba(255, 255, 255, 0);
+    outline: 2px solid rgba(0, 0, 0, 0);
 }
+
 .box.half {
     background-color: rgba(0, 0, 0, .5);
 }
@@ -85,7 +97,8 @@ img {
     transition: opacity .5s ease-in;
 }
 
-#popup-won, #popup-lost {
+#popup-won,
+#popup-lost {
     display: none;
     position: absolute;
     top: 50vh;
@@ -101,8 +114,9 @@ img {
 }
 
 
-#popup-won.less, #popup-lost.less {
-    top: 30px;
+#popup-won.less,
+#popup-lost.less {
+    top: 50px;
     font-size: 60px;
 }
 
