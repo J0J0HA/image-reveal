@@ -25,6 +25,10 @@ function show(x) {
     console.log("Showing box", x)
     document.getElementsByClassName("box")[x].className = "box";
 }
+function show_no_outline(x) {
+    console.log("Showing box", x)
+    document.getElementsByClassName("box")[x].className = "box hidden-outline";
+}
 function show_half(x) {
     console.log("Half-showing box", x)
     document.getElementsByClassName("box")[x].className = "box half";
@@ -60,8 +64,7 @@ function stop() {
         document.getElementById("popup-lost").className = "less";
     }, 4000)
     setTimeout(() => {
-        for (let id of [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0]) {
-            hide(id);
+        for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
             hide_outline(id);
         }
         setTimeout(() => document.getElementById("img").className = "impo", 3000);
@@ -70,17 +73,34 @@ function stop() {
 }
 
 function start() {
-    document.getElementById("img").className = "";
     faderem(document.getElementById("start"));
     faderem(document.getElementById("popup-won"));
     faderem(document.getElementById("popup-lost"));
+    document.getElementById("img").className = "";
+    if (data.images.length == 0) {
+        setTimeout(() => {
+            for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+                show_no_outline(id);
+            }
+            setTimeout(() => document.getElementById("img").src = "ImageRevealFinished.png", 1000)
+            setTimeout(() => {
+
+            for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+                hide_outline(id);
+            }
+            }, 2000)
+        }, 1000)
+        return;
+    }
     setTimeout(() => {
         data.shown = [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0].sort(() => Math.random() - 0.5);
         for (let id of data.shown) {
             show(id);
         }
         setTimeout(() => {
-            document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?__nocache__=" + Date.now())
+            image = data.images.pop()
+            console.log(image.answer)
+            document.getElementById("img").setAttribute("src", image.url)
             document.getElementById("popup-won").className = "";
             document.getElementById("popup-lost").className = "";
             setTimeout(() => {
@@ -90,3 +110,41 @@ function start() {
         }, 1000)
     }, 1000);
 }
+
+function preloadImage(url) {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.src = url;
+        img.onload = () => {
+            resolve(img);
+        };
+        img.onerror = reject;
+    })
+}
+
+function init_workspace() {
+    for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+        hide_outline(id);
+    }
+    setTimeout(() => {
+        document.getElementById("img").className = "impo";
+        fadeadd(document.getElementById("start"))
+    }, 5000)
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+    data.images = [
+        {
+            url: "https://picsum.photos/2000/1500",
+            answer: "landscape"
+        },
+        {
+            url: "https://picsum.photos/1500/2000",
+            answer: "portrait"
+        }
+    ].sort(() => Math.random() - 0.5);
+    for (let image of data.images) {
+        await preloadImage(image.url);
+    }
+    init_workspace();
+})
