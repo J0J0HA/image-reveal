@@ -193,8 +193,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 document.addEventListener('keyup', (e) => {
     switch (e.code) {
-        case "KeyK":
-        case "Space":
+        case "Enter":
             switch (data.status) {
                 case "start":
                     start();
@@ -206,8 +205,7 @@ document.addEventListener('keyup', (e) => {
                     console.log("Unknown state.")
             }
             break;
-        case "KeyB":
-        case "KeyP":
+        case "Space":
             data.paused = !data.paused;
             break;
         default:
