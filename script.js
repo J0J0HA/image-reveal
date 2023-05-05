@@ -136,7 +136,7 @@ function start() {
         return;
     }
     setTimeout(() => {
-        data.shown = [...ordered_ids].sort(() => Math.random() - 0.5);
+        data.shown = [...ordered_ids].sort(() => Math.random()*10 - 5);
         show_tlo();
         for (let id of data.shown) {
             show(id);
