@@ -31,6 +31,12 @@ main {
     height: 80svh;
     max-height: 80svw;
     aspect-ratio: 1;
+    outline: 2px solid white;
+}
+
+.covers.hidden-outline {
+    outline: 2px solid rgba(0, 0, 0, 0);
+    transition: outline 2s ease-out 1.5s;
 }
 
 .box {
@@ -118,7 +124,16 @@ img.impo {
     font-size: 60px;
 }
 
+#popup-lost.less {
+    right: 100px;
+}
+
 #popup-lost {
     color: rgba(255, 0, 0, 0.7);
-    transform: translate(-50%, -50%);
+}
+
+.edge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
 }

@@ -3,6 +3,8 @@ let data = {
     intervalID: null
 }
 
+const ordered_ids = [9, 6, 5, 10, 14, 2, 4, 7, 1, 11, 8, 13, 0, 15, 3, 12];
+
 function faderem(elm) {
     elm.style.opacity = "0";
     setTimeout(() => elm.style.display = "none", 1100);
@@ -11,6 +13,15 @@ function faderem(elm) {
 function fadeadd(elm) {
     elm.style.display = "block";
     setTimeout(() => elm.style.opacity = "1", 200);
+}
+
+function hide_tlo() {
+    console.log("Hiding top level outline")
+    document.getElementById("cover").className = "covers hidden-outline";
+}
+function show_tlo() {
+    console.log("Showing top level outline")
+    document.getElementById("cover").className = "covers";
 }
 
 function hide(x) {
@@ -64,7 +75,8 @@ function stop() {
         document.getElementById("popup-lost").className = "less";
     }, 4000)
     setTimeout(() => {
-        for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+        hide_tlo()
+        for (let id of ordered_ids) {
             hide_outline(id);
         }
         setTimeout(() => document.getElementById("img").className = "impo", 3000);
@@ -79,21 +91,23 @@ function start() {
     document.getElementById("img").className = "";
     if (data.images.length == 0) {
         setTimeout(() => {
-            for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+            hide_tlo()
+            for (let id of ordered_ids) {
                 show_no_outline(id);
             }
             setTimeout(() => document.getElementById("img").src = "ImageRevealFinished.png", 1000)
             setTimeout(() => {
-
-            for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
-                hide_outline(id);
-            }
+                hide_tlo()
+                for (let id of ordered_ids) {
+                    hide_outline(id);
+                }
             }, 2000)
         }, 1000)
         return;
     }
     setTimeout(() => {
-        data.shown = [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0].sort(() => Math.random() - 0.5);
+        data.shown = [...ordered_ids].sort(() => Math.random() - 0.5);
+        show_tlo();
         for (let id of data.shown) {
             show(id);
         }
@@ -123,28 +137,22 @@ function preloadImage(url) {
 }
 
 function init_workspace() {
-    for (let id of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+    hide_tlo()
+    for (let id of ordered_ids) {
         hide_outline(id);
     }
     setTimeout(() => {
         document.getElementById("img").className = "impo";
         fadeadd(document.getElementById("start"))
-    }, 5000)
+    }, 1000)
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-    data.images = [
-        {
-            url: "https://picsum.photos/2000/1500",
-            answer: "landscape"
-        },
-        {
-            url: "https://picsum.photos/1500/2000",
-            answer: "portrait"
-        }
-    ].sort(() => Math.random() - 0.5);
-    for (let image of data.images) {
-        await preloadImage(image.url);
-    }
-    init_workspace();
+    window.fetch(prompt("Images List:")).then(async (resp) => {
+        data.images = (await resp.json())["images"].sort(() => Math.random() - 0.5);
+        await Promise.all(data.images.map(x => preloadImage(x.url)))
+        init_workspace();
+    }).catch((reason) => {
+        alert(`Failed: ${reason}`)
+    })
 })

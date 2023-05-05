@@ -1,0 +1,12 @@
+{
+    "images": [
+        {
+            "url": "https://picsum.photos/2000/1500",
+            "answer": "landscape"
+        },
+        {
+            "url": "https://picsum.photos/1500/2000",
+            "answer": "portrait"
+        }
+    ]
+}
