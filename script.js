@@ -3,6 +3,8 @@ let data = {
     intervalID: null
 }
 
+const ordered_ids = [9, 6, 5, 10, 14, 2, 4, 7, 1, 11, 8, 13, 0, 15, 3, 12];
+
 function faderem(elm) {
     elm.style.opacity = "0";
     setTimeout(() => elm.style.display = "none", 1100);
@@ -11,6 +13,15 @@ function faderem(elm) {
 function fadeadd(elm) {
     elm.style.display = "block";
     setTimeout(() => elm.style.opacity = "1", 200);
+}
+
+function hide_tlo() {
+    console.log("Hiding top level outline")
+    document.getElementById("cover").className = "covers hidden-outline";
+}
+function show_tlo() {
+    console.log("Showing top level outline")
+    document.getElementById("cover").className = "covers";
 }
 
 function hide(x) {
@@ -24,6 +35,10 @@ function hide_outline(x) {
 function show(x) {
     console.log("Showing box", x)
     document.getElementsByClassName("box")[x].className = "box";
+}
+function show_no_outline(x) {
+    console.log("Showing box", x)
+    document.getElementsByClassName("box")[x].className = "box hidden-outline";
 }
 function show_half(x) {
     console.log("Half-showing box", x)
@@ -60,8 +75,8 @@ function stop() {
         document.getElementById("popup-lost").className = "less";
     }, 4000)
     setTimeout(() => {
-        for (let id of [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0]) {
-            hide(id);
+        hide_tlo()
+        for (let id of ordered_ids) {
             hide_outline(id);
         }
         setTimeout(() => document.getElementById("img").className = "impo", 3000);
@@ -70,17 +85,36 @@ function stop() {
 }
 
 function start() {
-    document.getElementById("img").className = "";
     faderem(document.getElementById("start"));
     faderem(document.getElementById("popup-won"));
     faderem(document.getElementById("popup-lost"));
+    document.getElementById("img").className = "";
+    if (data.images.length == 0) {
+        setTimeout(() => {
+            hide_tlo()
+            for (let id of ordered_ids) {
+                show_no_outline(id);
+            }
+            setTimeout(() => document.getElementById("img").src = "ImageRevealFinished.png", 1000)
+            setTimeout(() => {
+                hide_tlo()
+                for (let id of ordered_ids) {
+                    hide_outline(id);
+                }
+            }, 2000)
+        }, 1000)
+        return;
+    }
     setTimeout(() => {
-        data.shown = [8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15, 0].sort(() => Math.random() - 0.5);
+        data.shown = [...ordered_ids].sort(() => Math.random() - 0.5);
+        show_tlo();
         for (let id of data.shown) {
             show(id);
         }
         setTimeout(() => {
-            document.getElementById("img").setAttribute("src", "https://picsum.photos/2000/1500?__nocache__=" + Date.now())
+            let image = data.images.pop()
+            console.log(image.answer)
+            document.getElementById("img").setAttribute("src", image.url)
             document.getElementById("popup-won").className = "";
             document.getElementById("popup-lost").className = "";
             setTimeout(() => {
@@ -90,3 +124,35 @@ function start() {
         }, 1000)
     }, 1000);
 }
+
+function preloadImage(url) {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.src = url;
+        img.onload = () => {
+            resolve(img);
+        };
+        img.onerror = reject;
+    })
+}
+
+function init_workspace() {
+    hide_tlo()
+    for (let id of ordered_ids) {
+        hide_outline(id);
+    }
+    setTimeout(() => {
+        document.getElementById("img").className = "impo";
+        fadeadd(document.getElementById("start"))
+    }, 1000)
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+    window.fetch(prompt("Images List:")).then(async (resp) => {
+        data.images = (await resp.json())["images"].sort(() => Math.random() - 0.5);
+        await Promise.all(data.images.map(x => preloadImage(x.url)))
+        init_workspace();
+    }).catch((reason) => {
+        alert(`Failed: ${reason}`)
+    })
+})

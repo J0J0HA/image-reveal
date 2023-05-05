@@ -4,7 +4,13 @@ html,
 body {
     height: 100%;
     overflow: hidden;
-    font-family: Sigmar;
+    font-family: Sigmar, Arial, sans-serif;
+    background-color: black;
+    color: white;
+}
+
+a {
+    color: rgb(178, 183, 255);
 }
 
 body {
@@ -24,11 +30,6 @@ main {
     aspect-ratio: 1;
 }
 
-img {
-    width: 100%;
-    max-height: 100%;
-}
-
 .covers {
     position: absolute;
     display: grid;
@@ -36,6 +37,12 @@ img {
     height: 80svh;
     max-height: 80svw;
     aspect-ratio: 1;
+    outline: 2px solid white;
+    transition: outline 2s ease-out 1.5s;
+}
+
+.covers.hidden-outline {
+    outline: 2px solid rgba(0, 0, 0, 0);
 }
 
 .box {
@@ -47,7 +54,10 @@ img {
     transition: background-color 1s ease-in, outline 2s ease-out 1.5s;
 }
 
+
 img {
+    max-width: 100%;
+    max-height: 100%;
     transition: transform .75s ease-in-out;
 }
 
@@ -68,25 +78,25 @@ img.impo {
 }
 
 #start {
-    display: block;
+    display: none;
     position: absolute;
-    bottom: 10vh;
-    width: 30vw;
+    left: 20px;
+    width: 10vw;
     font-size: 25px;
     border: 1px solid darkolivegreen;
     background-color: darkgreen;
     border-radius: 0;
     padding: 10px;
     color: white;
-    opacity: 1;
+    opacity: 0;
     transition: opacity .5s ease-in;
 }
 
 #stop {
     display: none;
     position: absolute;
-    bottom: 10vh;
-    width: 30vw;
+    left: 20px;
+    width: 10vw;
     font-size: 25px;
     border: 1px solid darkred;
     background-color: red;
@@ -101,8 +111,8 @@ img.impo {
 #popup-lost {
     display: none;
     position: absolute;
-    top: 50vh;
-    transform: translate(0, -50%);
+    right: 50svw;
+    transform: translate(50%, 0);
     color: rgba(0, 127.5, 0, 0.7);
     background-color: rgba(255, 255, 255, 0.7);
     padding: 20px;
@@ -110,16 +120,26 @@ img.impo {
     line-height: 1em;
     opacity: 0;
     font-size: 120px;
-    transition: opacity .5s ease-out, top 1.5s ease-out, font-size 1.5s ease-out;
+    transition: opacity .5s ease-out, right 1.5s ease-out, font-size 1.5s ease-out;
 }
 
 
 #popup-won.less,
 #popup-lost.less {
-    top: 50px;
+    right: 50px;
     font-size: 60px;
 }
 
+#popup-lost.less {
+    right: 100px;
+}
+
 #popup-lost {
-    color: rgba(255, 0, 0, 0.7)
+    color: rgba(255, 0, 0, 0.7);
+}
+
+.edge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
 }
