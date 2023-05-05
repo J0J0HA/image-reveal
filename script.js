@@ -112,7 +112,7 @@ function start() {
             show(id);
         }
         setTimeout(() => {
-            image = data.images.pop()
+            let image = data.images.pop()
             console.log(image.answer)
             document.getElementById("img").setAttribute("src", image.url)
             document.getElementById("popup-won").className = "";

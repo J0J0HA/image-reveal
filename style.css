@@ -4,7 +4,13 @@ html,
 body {
     height: 100%;
     overflow: hidden;
-    font-family: Sigmar;
+    font-family: Sigmar, Arial, sans-serif;
+    background-color: black;
+    color: white;
+}
+
+a {
+    color: rgb(178, 183, 255);
 }
 
 body {
@@ -32,11 +38,11 @@ main {
     max-height: 80svw;
     aspect-ratio: 1;
     outline: 2px solid white;
+    transition: outline 2s ease-out 1.5s;
 }
 
 .covers.hidden-outline {
     outline: 2px solid rgba(0, 0, 0, 0);
-    transition: outline 2s ease-out 1.5s;
 }
 
 .box {
