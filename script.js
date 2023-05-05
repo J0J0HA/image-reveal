@@ -5,6 +5,26 @@ let data = {
     status: null,
     paused: false,
     speed: null,
+    callback: ()=>{}
+}
+
+if (localStorage.getItem("dc_callback")) {
+    data.callback = function (img) {
+        window.fetch(
+            localStorage.getItem("dc_callback"),
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    content: "The answer is: " + img.answer + "\n" + img.url,
+                    username: "Image " + img.id,
+                    avatar_url: img.url
+                })
+            }
+        )
+    };
 }
 
 const ordered_ids = [9, 6, 5, 10, 14, 2, 4, 7, 1, 11, 8, 13, 0, 15, 3, 12];
@@ -104,7 +124,8 @@ function start() {
             for (let id of ordered_ids) {
                 show_no_outline(id);
             }
-            setTimeout(() => document.getElementById("img").src = "ImageRevealFinished.png", 1000)
+            setTimeout(() => document.getElementById("img").src = "ImageRevealFinished.png", 1000);
+            document.getElementById("imgid").innerText = "";
             setTimeout(() => {
                 hide_tlo()
                 for (let id of ordered_ids) {
@@ -123,7 +144,8 @@ function start() {
         setTimeout(() => {
             let image = data.images.pop()
             console.log(image.answer)
-            document.getElementById("imgid").innerText = image.id + " | "
+            data.callback(image)
+            document.getElementById("imgid").innerText = image.id + " | ";
             document.getElementById("img").setAttribute("src", image.url)
             document.getElementById("popup-won").className = "";
             document.getElementById("popup-lost").className = "";
