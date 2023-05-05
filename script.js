@@ -206,7 +206,7 @@ document.addEventListener('keyup', (e) => {
             }
             break;
         case "Space":
-            data.paused = !data.paused;
+            if (data.status == "stop") data.paused = !data.paused;
             break;
         default:
             console.log("Invalid Key.")
