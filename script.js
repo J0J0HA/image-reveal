@@ -1,16 +1,20 @@
 let data = {
     shown: null,
-    intervalID: null
+    intervalID: null,
+    images: null,
+    status: null
 }
 
 const ordered_ids = [9, 6, 5, 10, 14, 2, 4, 7, 1, 11, 8, 13, 0, 15, 3, 12];
 
 function faderem(elm) {
+    if (elm.id == "start" || elm.id == "stop") data.status = "off";
     elm.style.opacity = "0";
     setTimeout(() => elm.style.display = "none", 1100);
 }
 
 function fadeadd(elm) {
+    if (elm.id == "start" || elm.id == "stop") data.status = elm.id;
     elm.style.display = "block";
     setTimeout(() => elm.style.opacity = "1", 200);
 }
@@ -156,3 +160,20 @@ window.addEventListener("DOMContentLoaded", async () => {
         alert(`Failed: ${reason}`)
     })
 })
+
+document.addEventListener('keyup', (e) => {
+    if (e.code !== "Space"){
+        return
+    }
+
+    switch (data.status) {
+        case "start":
+            start();
+            break;
+        case "stop":
+            stop_manual();
+            break;
+        default:
+            console.log("Failed.")
+    }
+  });
