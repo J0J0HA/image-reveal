@@ -4,6 +4,7 @@ let data = {
     images: null,
     status: null,
     paused: false,
+    speed: null,
 }
 
 const ordered_ids = [9, 6, 5, 10, 14, 2, 4, 7, 1, 11, 8, 13, 0, 15, 3, 12];
@@ -127,7 +128,7 @@ function start() {
             document.getElementById("popup-won").className = "";
             document.getElementById("popup-lost").className = "";
             setTimeout(() => {
-                data.intervalID = setInterval(choose, 1000);
+                data.intervalID = setInterval(choose, data.speed || 1000);
                 fadeadd(document.getElementById("stop"));
             }, 1000);
         }, 1000)
@@ -158,7 +159,9 @@ function init_workspace() {
 
 window.addEventListener("DOMContentLoaded", async () => {
     window.fetch(prompt("Images List:")).then(async (resp) => {
-        data.images = (await resp.json())["images"].sort(() => Math.random() - 0.5);
+        let json = await resp.json();
+        data.images = json["images"].sort(() => Math.random() - 0.5);
+        data.speed = json["speed"];
         await Promise.all(data.images.map(x => preloadImage(x.url)))
         init_workspace();
     }).catch((reason) => {

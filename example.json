@@ -1,4 +1,5 @@
 {
+    "speed": 1000,
     "images": [
         {
             "url": "https://picsum.photos/2000/1500",
