@@ -2,7 +2,8 @@ let data = {
     shown: null,
     intervalID: null,
     images: null,
-    status: null
+    status: null,
+    paused: false,
 }
 
 const ordered_ids = [9, 6, 5, 10, 14, 2, 4, 7, 1, 11, 8, 13, 0, 15, 3, 12];
@@ -50,6 +51,9 @@ function show_half(x) {
 }
 
 function choose() {
+    if (data.paused) {
+        return;
+    }
     if (data.shown.length <= 0) {
         stop_automated();
         return;
@@ -162,18 +166,25 @@ window.addEventListener("DOMContentLoaded", async () => {
 })
 
 document.addEventListener('keyup', (e) => {
-    if (e.code !== "Space"){
-        return
-    }
-
-    switch (data.status) {
-        case "start":
-            start();
+    switch (e.code) {
+        case "KeyK":
+        case "Space":
+            switch (data.status) {
+                case "start":
+                    start();
+                    break;
+                case "stop":
+                    stop_manual();
+                    break;
+                default:
+                    console.log("Unknown state.")
+            }
             break;
-        case "stop":
-            stop_manual();
+        case "KeyB":
+        case "KeyP":
+            data.paused = !data.paused;
             break;
         default:
-            console.log("Failed.")
+            console.log("Invalid Key.")
     }
-  });
+});
