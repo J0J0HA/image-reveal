@@ -122,6 +122,7 @@ function start() {
         setTimeout(() => {
             let image = data.images.pop()
             console.log(image.answer)
+            document.getElementById("imgid").innerText = image.id + " | "
             document.getElementById("img").setAttribute("src", image.url)
             document.getElementById("popup-won").className = "";
             document.getElementById("popup-lost").className = "";

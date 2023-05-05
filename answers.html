@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Answers | Image Reveal</title>
+
+    <script>
+        function calc_result() {
+            let url = document.getElementById("jsonurl").value;
+            let imgid = document.getElementById("imgid").value;
+            window.fetch(url).then((resp) => {
+                resp.json().then((json)=> {
+                    let did = false;
+                    for (let image of json.images) {
+                        if (image.id == imgid) {
+                            did = true
+                            document.getElementById("answer").innerText = image.answer;
+                            break;
+                        }
+                    }
+                    if (!did){
+                        document.getElementById("answer").innerText = "Failed search";
+                    }
+                }).catch(()=>{
+                    document.getElementById("answer").innerText = "Failed JSON";
+                })
+            }).catch(()=>{
+                document.getElementById("answer").innerText = "Failed fetch";
+            })
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <form action="#" onclick="return calc_result();">
+        <input type="url" name="jsonurl" id="jsonurl"><br>
+        <input type="text" name="imgid" id="imgid"><br>
+        <input type="submit" value="Get Result"><hr>
+        <span id="answer"></span>
+    </form>
+</body>
+</html>
